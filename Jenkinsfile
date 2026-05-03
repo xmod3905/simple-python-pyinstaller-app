@@ -1,7 +1,7 @@
 node {
     checkout scm
 
-    docker.image('python:3.9-slim').inside {
+    docker.image('python:3.9-slim').inside('-u root') {
         try {
             stage('Build') {
                 sh 'python3 -m py_compile sources/add2vals.py sources/calc.py'
