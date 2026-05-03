@@ -19,6 +19,7 @@ node {
 
             stage('Deliver') {
                 sh '''
+                    apt-get update && apt-get install -y binutils
                     export PYTHONUSERBASE=$WORKSPACE/.pip-packages
                     export PATH=$PATH:$PYTHONUSERBASE/bin
                     pip install --user pyinstaller
