@@ -17,7 +17,11 @@ node {
                 junit 'test-reports/results.xml'
             }
 
-            stage('Deliver') {
+            stage('Manual Approval') {
+                input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
+            }
+
+            stage('Deploy') {
                 sh '''
                     apt-get update && apt-get install -y binutils
                     export PYTHONUSERBASE=$WORKSPACE/.pip-packages
@@ -25,6 +29,8 @@ node {
                     pip install --user pyinstaller
                     pyinstaller --onefile sources/add2vals.py
                 '''
+                sh 'dist/add2vals 20.3 13.0'
+                sleep time: 1, unit: 'MINUTES'
                 archiveArtifacts 'dist/add2vals'
             }
         } catch (exc) {
